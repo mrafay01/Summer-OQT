@@ -1,14 +1,19 @@
 /* ===== Base Theme Variables ===== */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
 :root {
   --primary-color: #556b2f; /* Indigo */
   --primary-hover: #485c24;
   --bg-second-color: #feffec;
   --bg-primary-color: #fbfcf2;
-  --text-color: #112505;
+  --text-color: #253509;
   --border-color: #d3dbd1;
   --radius: 8px;
   --transition: 0.2s ease;
-  --font-family: 'Inter', sans-serif;
+  --font-family: 'Quicksand', 'Inter', sans-serif;
+}
+
+h1, h2{
+  color: #374914
 }
 
 /* ===== Global Reset ===== */
@@ -95,6 +100,57 @@ select:focus {
 /* ===== Field Spacing ===== */
 form > div {
   margin-bottom: 1rem;
+}
+
+/* ===== Checkbox Styling ===== */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: all var(--transition);
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+input[type="checkbox"]:hover {
+  border-color: var(--primary-color);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Label styling for better alignment */
+.course label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  transition: color var(--transition);
+}
+
+.course label:hover {
+  color: var(--primary-color);
 }
 
 /* ===== Action Buttons Container ===== */
