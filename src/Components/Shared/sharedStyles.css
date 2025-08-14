@@ -24,6 +24,7 @@ h1, h2{
 }
 
 body {
+  padding-top: 1.3rem;
   font-family: var(--font-family);
   background-color: var(--bg-primary-color);
   color: var(--text-color);
@@ -162,10 +163,57 @@ input[type="checkbox"]:checked::after {
   margin-bottom: 1rem;
 }
 
+/* ===== Dashboard Layout ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+/* ===== Dashboard Cards ===== */
+.cards {
+  background-color: var(--bg-second-color);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+}
+
+.cards:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Card Titles ===== */
+.cards .title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+/* ===== Page Heading ===== */
+h1 {
+  font-size: 1.6rem;
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+
 /* ===== Responsive ===== */
 @media (max-width: 480px) {
   .formbox {
     padding: 1rem;
     margin: 1rem;
+  }
+    .grid {
+    grid-template-columns: 1fr;
   }
 }
