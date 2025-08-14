@@ -1,0 +1,115 @@
+/* ===== Base Theme Variables ===== */
+:root {
+  --primary-color: #556b2f; /* Indigo */
+  --primary-hover: #485c24;
+  --bg-second-color: #feffec;
+  --bg-primary-color: #fbfcf2;
+  --text-color: #112505;
+  --border-color: #d3dbd1;
+  --radius: 8px;
+  --transition: 0.2s ease;
+  --font-family: 'Inter', sans-serif;
+}
+
+/* ===== Global Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-primary-color);
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+/* ===== Form Container ===== */
+.formbox {
+  background: var(--bg-second-color);
+  padding: 2rem;
+  max-width: 400px;
+  margin: 2rem auto;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.formbox h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Buttons ===== */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  transition: background var(--transition), transform var(--transition);
+}
+
+button.user,
+button.loginsignup {
+  background-color: var(--primary-color);
+  color: white;
+  margin: 0.3rem;
+}
+
+button.user:hover,
+button.loginsignup:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+button.submit {
+  width: 100%;
+  margin-top: 1rem;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+button.submit:hover {
+  background-color: var(--primary-hover);
+}
+
+/* ===== Input Fields ===== */
+input,
+select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* ===== Field Spacing ===== */
+form > div {
+  margin-bottom: 1rem;
+}
+
+/* ===== Action Buttons Container ===== */
+.user,
+.action {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+  .formbox {
+    padding: 1rem;
+    margin: 1rem;
+  }
+}
