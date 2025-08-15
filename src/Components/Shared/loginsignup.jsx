@@ -32,7 +32,7 @@ const loginsignup = () => {
         localStorage.setItem("username", username);
         localStorage.setItem("name", response.data.name);
         localStorage.setItem("role", selectUser);
-        navigate(`/${selectUser}/dashboard`);
+        navigate(`/${selectUser}/${username}/dashboard`);
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -98,7 +98,7 @@ const loginsignup = () => {
         localStorage.setItem("username", response.data.username);
         localStorage.setItem("name", response.data.name);
         localStorage.setItem("role", selectUser);
-        if (selectUser !== "Teacher") navigate(`/${selectUser}/dashboard`);
+        if (selectUser !== "Teacher") navigate(`/${selectUser}/${username}/dashboard`);
         else navigate(`/teacherextrasignup`);
       })
       .catch((response) => {
@@ -108,10 +108,12 @@ const loginsignup = () => {
 
   const handleChangeAction = (value) => {
     setSelectAction(value);
+    console.log(value);
   };
 
   const handleChangeUser = (value) => {
     setSelectUser(value);
+    console.log(value);
   };
 
   const handleChangeGender = (event) => {
@@ -153,7 +155,14 @@ const loginsignup = () => {
             {selectAction} as {selectUser}
           </h2>
           {selectAction === "Login" ? (
-            <form action="" className="login">
+            <form
+              action=""
+              className="login"
+              onSubmit={(e) => {
+                e.preventDefault();
+                HandleLogin();
+              }}
+            >
               <div className="username">
                 <input
                   required
@@ -170,7 +179,7 @@ const loginsignup = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button className="submit" onClick={HandleLogin}>
+              <button className="submit" type="submit">
                 {selectAction}
               </button>
             </form>
