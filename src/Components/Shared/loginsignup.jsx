@@ -10,7 +10,6 @@ const loginsignup = () => {
   const [selectGender, setSelectGender] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [apiUser, setApiUser] = useState("");
   const [signupData, setSignupData] = useState({
     name: "",
     username: "",
@@ -28,29 +27,33 @@ const loginsignup = () => {
         `http://localhost/OnlineQuranServer/api/tutor/UserLogin?userName=${username}&password=${password}`
       )
       .then((response) => {
-        localStorage.setItem("id", response.data.id);
-        localStorage.setItem("username", username);
-        localStorage.setItem("name", response.data.name);
-        localStorage.setItem("role", selectUser);
-        navigate(`/${selectUser}/${username}/dashboard`);
+        const data = response.data;
+        if (CheckLogin(response.data)) {
+          localStorage.setItem("id", data.id);
+          localStorage.setItem("username", data.username);
+          localStorage.setItem("name", data.name);
+          localStorage.setItem("role", selectUser);
+          navigate(`/${selectUser}/${username}/dashboard`);
+        }
       })
       .catch((err) => {
-        console.log(err.response.data);
+        alert(err.response.data);
       });
   };
 
-  const CheckLogin = (data) => {
-    if (selectUser === "Teacher") {
-      setApiUser(data);
-      console.log("Successful");
-    } else if (selectUser === "Parent") {
-      setApiUser(data);
-      console.log("Successful");
-    } else if (selectUser === "Student") {
-      setApiUser(data);
-      console.log("Successful");
+  function CheckLogin(data) {
+    if (selectUser === "Teacher" && data.type === "T") {
+      alert("Successfully Logged in!");
+      return true;
+    } else if (selectUser === "Parent" && data.type === "P") {
+      alert("Successfully Logged in!");
+      return true;
+    } else if (selectUser === "Student" && data.type === "S") {
+      alert("Successfully Logged in!");
+      return true;
     } else {
-      console.log("User Not found!");
+      alert("User Not found!");
+      return false;
     }
   };
 

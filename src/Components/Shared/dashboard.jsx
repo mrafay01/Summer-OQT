@@ -6,7 +6,7 @@ const dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userRole = localStorage.getItem("Role");
+    const userRole = localStorage.getItem("role");
     setSelectUser(userRole ? userRole : "Student");
   }, []);
 
@@ -27,7 +27,9 @@ const dashboard = () => {
     } else if (cardIndex === 2) {
       // All parameters are already in localStorage
       if (selectUser === "Parent") navigate("/Kids-courses");
-      else navigate(`/${selectUser}/courses`);
+      if (selectUser === "Teacher") navigate("/Teacher-courses");
+
+      else navigate(`/Student-courses`);
     } else if (cardIndex === 3) {
       if (selectUser === "Teacher") navigate("/start-class");
       else if (selectUser === "Student") navigate("/join-class");
@@ -38,6 +40,9 @@ const dashboard = () => {
   return (
     <div>
       <h1>{selectUser} Dashboard</h1>
+      <h3 className="subheading">
+        Click on the cards below to navigate
+      </h3>
       <div className="grid">
         <div className="cards" onClick={() => handleCardClick(0)}>
           <h3 className="title">
@@ -50,7 +55,7 @@ const dashboard = () => {
         </div>
         <div className="cards" onClick={() => handleCardClick(1)}>
           <h3 className="title">
-            {selectUser === "Teacher" || selectUser === "Student"
+            {selectUser === "Teacher"
               ? "View/Set Schedule"
               : "View Schedule"}
           </h3>

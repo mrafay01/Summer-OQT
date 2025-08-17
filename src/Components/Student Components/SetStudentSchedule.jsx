@@ -3,24 +3,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Shared/sharedStyles.css";
 
-const TeacherSchedule = () => {
+const SetStudentSchedule = () => {
   const navigate = useNavigate();
   const [slots, setSlots] = useState([]);
-  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [days, setDays] = useState([]);
+  const courseId = localStorage.getItem("selected_course_id");
 
   useEffect(() => {
     axios
-      .get(`http://localhost/OnlineQuranServer/api/tutor/GetTeacherSlots?teacher_id=${localStorage.getItem("id")}`)
+      .get(`http://localhost/OnlineQuranServer/api/tutor/GetDummySlots`)
       .then((res) => {
         setSlots(res.data);
 
-        // Dynamically extract day keys from first slot
+        // Dynamically get days from API response keys
         if (res.data.length > 0) {
-          const excludeKeys = ["timeSlot", "from_time", "to_time", "teacher_id"];
-          const days = Object.keys(res.data[0]).filter(
-            key => !excludeKeys.includes(key) && typeof res.data[0][key] === "boolean"
+          const slotKeys = Object.keys(res.data[0]);
+          // Filter keys that match day names (Mon, Tue, ...)
+          const dayKeys = slotKeys.filter((key) =>
+            ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].includes(key)
           );
-          setDaysOfWeek(days);
+          setDays(dayKeys);
         }
       })
       .catch((err) => {
@@ -35,22 +37,20 @@ const TeacherSchedule = () => {
         idx === slotIndex ? { ...slot, [day]: !slot[day] } : slot
       )
     );
+    console.log("Selected Slots:", slots);
+    console.log("Course ID:", courseId);
   };
 
   // Handler to save and send selected slots to next screen
-  const handleSaveChanges = async () => {
-    try {
-      // POST the slots array to your API
-      await axios.post(
-        "http://localhost/OnlineQuranServer/api/tutor/ManageMultipleSlot",
-        slots
-      );
-      localStorage.setItem("selected_slots", JSON.stringify(slots));
-      alert("Slots saved successfully!");
-    } catch (error) {
-      console.error("Error saving slots:", error);
-      alert("Failed to save slots. Please try again.");
-    }
+  const handleSaveChanges = () => {
+    localStorage.setItem("selected_slots", JSON.stringify(slots));
+    localStorage.setItem("selected_course_id", courseId);
+
+    // Debug logs
+    console.log("Saved selected_slots:", slots);
+    console.log("Saved selected_course_id:", courseId);
+
+    navigate("/browse-teachers");
   };
 
   return (
@@ -61,7 +61,7 @@ const TeacherSchedule = () => {
         <thead>
           <tr>
             <th>Time Slot</th>
-            {daysOfWeek.map((day) => (
+            {days.map((day) => (
               <th key={day}>{day}</th>
             ))}
           </tr>
@@ -70,7 +70,7 @@ const TeacherSchedule = () => {
           {slots.map((slot, slotIndex) => (
             <tr key={slotIndex}>
               <td>{slot.timeSlot}</td>
-              {daysOfWeek.map((day) => (
+              {days.map((day) => (
                 <td key={day}>
                   <input
                     type="checkbox"
@@ -90,4 +90,4 @@ const TeacherSchedule = () => {
   );
 };
 
-export default TeacherSchedule;
+export default SetStudentSchedule;

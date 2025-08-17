@@ -64,6 +64,7 @@ const FilteredTeachers = () => {
   return (
     <div>
       <h1>Filtered Teachers</h1>
+      <h3 className="subheading">Click on a teacher to hire</h3>
       <div className="grid">
         {teachers.length === 0 && <p>No teachers found for selected slot.</p>}
         {teachers.map((teacher) => (

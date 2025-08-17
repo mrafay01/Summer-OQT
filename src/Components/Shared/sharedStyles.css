@@ -48,6 +48,13 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.subheading {
+  /* font-size: 1.2rem; */
+  color: #7d9651;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
 /* ===== Buttons ===== */
 button {
   cursor: pointer;
@@ -179,6 +186,7 @@ input[type="checkbox"]:checked::after {
 .cards {
   background-color: var(--bg-second-color);
   border-radius: var(--radius);
+  margin: 1.4rem;
   padding: 1.5rem;
   text-align: center;
   border: 1px solid var(--border-color);
@@ -250,16 +258,16 @@ div > h1 {
 }
 
 /* ===== Student Schedule Styling ===== */
-.student-schedule-container {
+.schedule-container {
   background: var(--bg-second-color);
   border-radius: var(--radius);
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   padding: 2rem;
-  max-width: 700px;
+  max-width: 1000px;
   margin: 2rem auto;
 }
 
-.student-schedule-container h2 {
+.schedule-container h2 {
   text-align: center;
   margin-bottom: 1.5rem;
   color: var(--primary-color);
@@ -267,7 +275,7 @@ div > h1 {
   font-weight: 600;
 }
 
-.student-schedule-table {
+.schedule-table {
   width: 100%;
   border-collapse: collapse;
   background: var(--bg-primary-color);
@@ -276,47 +284,109 @@ div > h1 {
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
-.student-schedule-table th,
-.student-schedule-table td {
+.schedule-table th,
+.schedule-table td {
   padding: 0.8rem 0.5rem;
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   font-size: 1rem;
 }
 
-.student-schedule-table th {
+.schedule-table th {
   background: var(--primary-color);
   color: #fff;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
 
-.student-schedule-table tr:last-child td {
+.schedule-table tr:last-child td {
   border-bottom: none;
 }
 
-.student-schedule-table td {
+.schedule-table td {
   color: var(--text-color);
 }
 
-.student-schedule-table td:first-child {
+.schedule-table td:first-child {
   font-weight: 600;
   background: #f3f7e9;
 }
 
-.student-schedule-table tr:hover {
+.schedule-table tr:hover {
   background: #f7fbe9;
   transition: background var(--transition);
 }
 
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+  padding: 0 20px 40px;
+}
+
+/* Card styling */
+.lessons-cards {
+  background-color: var(--bg-second-color);
+  border-radius: 12px;
+  width: 96%;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.lessons-cards:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Add to sharedStyles.css */
+.lesson-text {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center; /* Center children horizontally */
+  margin-bottom: 3rem;
+}
+
+.ayah-card {
+  background: #f7fbe7;
+  width: 65%;
+  border-radius: 10px;
+  padding: 1.2rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(85, 107, 47, 0.07);
+  border: 1px solid #e2e8d5;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ayah-number {
+  font-size: 1rem;
+  color: #7d9651;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.ayah-text {
+  font-size: 1.5rem;
+  color: #253509;
+  font-family: 'Scheherazade New', serif; /* Use a nice Arabic font if available */
+  line-height: 2.2rem;
+  letter-spacing: 1px;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
-  .student-schedule-container {
+  .schedule-container {
     padding: 1rem;
     max-width: 98vw;
   }
-  .student-schedule-table th,
-  .student-schedule-table td {
+  .schedule-table th,
+  .schedule-table td {
     padding: 0.5rem 0.2rem;
     font-size: 0.95rem;
   }
