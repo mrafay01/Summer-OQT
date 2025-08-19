@@ -28,7 +28,6 @@ const dashboard = () => {
       // All parameters are already in localStorage
       if (selectUser === "Parent") navigate("/Kids-courses");
       if (selectUser === "Teacher") navigate("/Teacher-courses");
-
       else navigate(`/Student-courses`);
     } else if (cardIndex === 3) {
       if (selectUser === "Teacher") navigate("/start-class");
@@ -49,7 +48,7 @@ const dashboard = () => {
             {selectUser === "Teacher"
               ? "My Students"
               : selectUser === "Student"
-              ? "Browse Teachers"
+              ? "Your Progress"
               : "My Kids"}
           </h3>
         </div>

@@ -73,8 +73,16 @@ const FilteredTeachers = () => {
     // Gather all slot ids for this teacher
     const slotids = teacher.slots.map(slot => slot.id);
 
+    console.log(slotids, localStorage.getItem("student_id"), localStorage.getItem("selected_course_id"), teacher.teacher_id);
+
+    const params = new URLSearchParams();
+    slotids.forEach(id => params.append('slotids', id));
+    params.append('student_id', localStorage.getItem("student_id"));
+    params.append('course_id', localStorage.getItem("selected_course_id"));
+    params.append('teacher_id', teacher.teacher_id);
+
     axios.get(
-      `http://localhost/OnlineQuranServer/api/tutor/EnrollMultipleSlotsCourse?slotids=${slotids.join(",")}&student_id=${localStorage.getItem("student_id")}&course_id=${localStorage.getItem("selected_course_id")}&teacher_id=${teacher.teacher_id}`
+      `http://localhost/OnlineQuranServer/api/tutor/EnrollMultipleSlotsCourse?${params.toString()}`
     )
       .then((response) => {
         alert("Teacher hired successfully!");
