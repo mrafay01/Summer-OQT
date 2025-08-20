@@ -17,7 +17,7 @@ const dashboard = () => {
     localStorage.setItem("id", localStorage.getItem("id"));
 
     if (cardIndex === 0) {
-      if (selectUser === "Teacher") navigate("/my-students");
+      if (selectUser === "Teacher") navigate("/Teacher/Students");
       else if (selectUser === "Student") navigate("/browse-teachers");
       else navigate("/my-kids");
     } else if (cardIndex === 1) {
@@ -48,7 +48,7 @@ const dashboard = () => {
             {selectUser === "Teacher"
               ? "My Students"
               : selectUser === "Student"
-              ? "Your Progress"
+              ? "Your Enrollments"
               : "My Kids"}
           </h3>
         </div>

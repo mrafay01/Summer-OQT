@@ -26,17 +26,10 @@ const AllCourses = () => {
     navigate("/set-student-schedule");
   };
 
-  const handleViewLessons = (course) => {
-    localStorage.setItem("selected_course_id", course.id);
-    localStorage.setItem("selected_course_name", course.name);
+  const handleViewLessons = () => {
     localStorage.setItem("student_id", localStorage.getItem("id"));
     localStorage.setItem("userrole", localStorage.getItem("Role"));
-    if (course.id === 5) {
-      console.log("courseId:", course.id);
-      navigate("/hadith-books");
-    } else {
-      navigate("/view-lessons");
-    }
+    navigate("/view-course-progress");
   };
 
   return (
@@ -61,19 +54,15 @@ const AllCourses = () => {
           </div>
         ))}
       </div>
-
-       <h3 className="subheading"> To view lessons, Select the Course from below</h3>
-      <div className="grid">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            onClick={() => handleViewLessons(course)}
-            className="cards"
-          >
-            <h3>{course.name}</h3>
-            <p>{course.Sub_title}</p>
-          </div>
-        ))}
+      <div className="lesson-text">
+        <h3> Check your Course Progress</h3>
+        <button
+          className="submit"
+          style={{ width: "30%" }}
+          onClick={handleViewLessons}
+        >
+          Check Course Progress
+        </button>
       </div>
     </div>
   );
