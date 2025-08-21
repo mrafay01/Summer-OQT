@@ -18,7 +18,6 @@ const dashboard = () => {
 
     if (cardIndex === 0) {
       if (selectUser === "Teacher") navigate("/Teacher/Students");
-      else if (selectUser === "Student") navigate("/browse-teachers");
       else navigate("/my-kids");
     } else if (cardIndex === 1) {
       if (selectUser === "Teacher" || selectUser === "Student")
@@ -26,13 +25,11 @@ const dashboard = () => {
       else navigate("/kids-schedule");
     } else if (cardIndex === 2) {
       // All parameters are already in localStorage
-      if (selectUser === "Parent") navigate("/Kids-courses");
       if (selectUser === "Teacher") navigate("/Teacher-courses");
       else navigate(`/Student-courses`);
     } else if (cardIndex === 3) {
-      if (selectUser === "Teacher") navigate("/start-class");
-      else if (selectUser === "Student") navigate("/join-class");
-      else navigate("/view-class");
+      if (selectUser === "Student") navigate("/join-session");
+      else navigate("/view-session");
     }
   };
 
@@ -43,36 +40,28 @@ const dashboard = () => {
         Click on the cards below to navigate
       </h3>
       <div className="grid">
-        <div className="cards" onClick={() => handleCardClick(0)}>
+        {selectUser != "Student" ? <div className="cards" onClick={() => handleCardClick(0)}>
           <h3 className="title">
-            {selectUser === "Teacher"
-              ? "My Students"
-              : selectUser === "Student"
-              ? "Your Enrollments"
-              : "My Kids"}
+             {selectUser === "Teacher" ? "My Students" : "Kids Progress"}
           </h3>
-        </div>
+        </div> : ""}
         <div className="cards" onClick={() => handleCardClick(1)}>
           <h3 className="title">
             {selectUser === "Teacher"
               ? "View/Set Schedule"
-              : "View Schedule"}
+              : "Kids Schedule"}
           </h3>
         </div>
-        <div className="cards" onClick={() => handleCardClick(2)}>
+        {selectUser != "Parent" ? <div className="cards" onClick={() => handleCardClick(2)}>
           <h3 className="title">
-            {selectUser === "Parent" ? "Kid's " : ""}Courses
+             Courses 
           </h3>
-        </div>
-        <div className="cards" onClick={() => handleCardClick(3)}>
+        </div>: "" }
+        { selectUser != "Teacher" ? <div className="cards" onClick={() => handleCardClick(3)}>
           <h3 className="title">
-            {selectUser === "Teacher"
-              ? "Start Class"
-              : selectUser === "Student"
-              ? "Join Class"
-              : "View Class"}
+              View/Join Sessions
           </h3>
-        </div>
+        </div> : ""}
       </div>
     </div>
   );

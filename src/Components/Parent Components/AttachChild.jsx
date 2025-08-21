@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AttachChild = () => {
   const [studentUserName, setStudentUserName] = useState("");
   const [students, setStudents] = useState([]);
+  const Navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get(
@@ -36,18 +39,23 @@ const AttachChild = () => {
       });
   };
 
+  const handleCourseProgress = (sid) => {
+    localStorage.setItem("student_id", sid);
+    Navigate("/view-kids-courses");
+  };
+
   return (
     <div>
       <h1>Your Children</h1>
       {students.length > 0 ? (
-        <div className="lesson-text">
+        <div className="grid">
           {students.map((student, idx) => (
-            <div key={idx} className="ayah-card">
+            <div key={idx} className="cards">
               <h3>{student.name}</h3>
               <p>
                 <strong>Username:</strong> {student.username}
               </p>
-              <button className="submit" style={{width: "20%"}} onClick={() => handleAttach(student.username)}>Check Progress</button>
+              <button className="submit" style={{width: "20%"}} onClick={() => handleCourseProgress(student.id)}>Check Progress</button>
             </div>
           ))}
         </div>

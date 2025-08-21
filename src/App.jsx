@@ -7,12 +7,17 @@ import AllCourses from './Components/Shared/AllCourses.jsx';
 import FilteredTeachers from './Components/Student Components/FilteredTeachers.jsx';
 import TeacherCourses from './Components/TeacherComponents/TeacherCourses.jsx';
 import TeacherStudents from './Components/TeacherComponents/TeacherStudents.jsx';
+import TeacherStudentsbyCourse from './Components/TeacherComponents/TeacherStudentsbyCourse.jsx';
 import TeacherSchedule from './Components/TeacherComponents/TeacherSchedule.jsx';
 import StudentSchedule from './Components/Student Components/StudentSchedule.jsx';
 import HadithBooks from './Components/Shared/HadithBooks.jsx';
 import ViewLessons from './Components/Shared/ViewLessons.jsx';
 import QuranText from './Components/Shared/QuranText.jsx';
 import AttachChild from './Components/Parent Components/AttachChild.jsx';
+import JoinSession from './Components/Student Components/JoinSession.jsx';
+import ChildCourses from './Components/Parent Components/ChildCourses.jsx';
+import ViewChild from './Components/Parent Components/ViewChild.jsx';
+import ViewSession from './Components/Parent Components/ViewSession.jsx';
 
 function App() {
 
@@ -29,11 +34,16 @@ function App() {
         <Route path='/Teacher-courses' element={<TeacherCourses/>} />
         <Route path='/browse-teachers' element={<FilteredTeachers />} />
         <Route path='/Teacher/students' element={<TeacherStudents />} />
+        <Route path='/Teacher/students-by-course' element={<TeacherStudentsbyCourse />} />
         <Route path='/Teacher/schedule' element={<TeacherSchedule />} />
         <Route path='/hadith-books' element={<HadithBooks />} />
         <Route path='/view-lessons' element={<ViewLessons />} />
         <Route path='/view-quran-lesson-text' element={<QuranText />} />
         <Route path='/my-kids' element={<AttachChild />} />        
+        <Route path='/join-session' element={<JoinSession />} />
+        <Route path='/view-kids-courses' element={<ChildCourses />} />
+        <Route path='/kids-schedule' element={<ViewChild />} />
+        <Route path='/view-session' element={<ViewSession />} />
       </Routes>
     </Router>
   )

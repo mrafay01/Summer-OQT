@@ -6,8 +6,17 @@ const StudentSchedule = () => {
   const [slots, setSlots] = useState([]);
 
   useEffect(() => {
+    let studentid;
+    if (localStorage.getItem("role") === "Parent") {
+      studentid = localStorage.getItem("student_id");
+    } else {
+      studentid = localStorage.getItem("id");
+    }
+
     axios
-      .get(`http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${localStorage.getItem("id")}`)
+      .get(
+        `http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${studentid}`
+      )
       .then((res) => {
         setSlots(res.data);
       })
@@ -36,9 +45,14 @@ const StudentSchedule = () => {
               <td>{slot.CourseName}</td>
               <td>{slot.TeacherName}</td>
               <td>{slot.Day}</td>
-              <td>{`${slot.from_time?.substring(0,5)} - ${slot.to_time?.substring(0,5)}`}</td>
+              <td>{`${slot.from_time?.substring(
+                0,
+                5
+              )} - ${slot.to_time?.substring(0, 5)}`}</td>
               <td>{slot.start_date ? slot.start_date.substring(0, 10) : ""}</td>
-              <td>{slot.finish_date ? slot.finish_date.substring(0, 10) : ""}</td>
+              <td>
+                {slot.finish_date ? slot.finish_date.substring(0, 10) : ""}
+              </td>
             </tr>
           ))}
         </tbody>

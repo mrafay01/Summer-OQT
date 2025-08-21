@@ -24,7 +24,7 @@ const TeacherCourses = () => {
         localStorage.setItem("teacher_id", localStorage.getItem("id"));
         localStorage.setItem("role", localStorage.getItem("role"));
         localStorage.setItem("course_name", course.name);
-        navigate(`/teacher/students`);
+        navigate(`/Teacher/students-by-course`);
     };
 
     return (

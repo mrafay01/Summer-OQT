@@ -4,126 +4,143 @@ import React, { useState, useEffect } from 'react';
 
 const FilteredTeachers = () => {
   const [groupedTeachers, setGroupedTeachers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const course_id = localStorage.getItem("selected_course_id");
-    const student_id = localStorage.getItem("student_id");
-    const selected_slots = JSON.parse(localStorage.getItem("selected_slots"));
+    const fetchFilteredTeachers = async () => {
+      try {
+        const course_id = localStorage.getItem("selected_course_id");
+        const student_id = localStorage.getItem("student_id");
+        const selected_slots = JSON.parse(localStorage.getItem("selected_slots"));
 
-    // Collect all selected slot/day combinations
-    let slotRequests = [];
-    if (selected_slots && selected_slots.length > 0) {
-      selected_slots.forEach(slot => {
-        Object.keys(slot).forEach(key => {
-          if (
-            ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].includes(key) &&
-            slot[key]
-          ) {
-            slotRequests.push({
-              from_time: slot.from_time,
-              to_time: slot.to_time,
-              day: key
-            });
-          }
-        });
-      });
-    }
+        // Transform selected_slots data to match API format
+        const from_time = [];
+        const to_time = [];
+        const day = [];
 
-    if (course_id && student_id && slotRequests.length > 0) {
-      Promise.all(
-        slotRequests.map(req =>
-          axios.get(
-            `http://localhost/OnlineQuranServer/api/tutor/SearchTeacherMultipleSlots?course_id=${course_id}&student_id=${student_id}&from_time=${req.from_time}&to_time=${req.to_time}&day=${req.day}`
-          )
-        )
-      )
-        .then(responses => {
-          const allTeachers = responses.flatMap(res => res.data);
-
-          // Group by teacher name (and teacher_id for uniqueness)
-          const grouped = {};
-          allTeachers.forEach(teacher => {
-            const key = `${teacher.teacher_id}_${teacher.name}`;
-            if (!grouped[key]) {
-              grouped[key] = {
-                name: teacher.name,
-                teacher_id: teacher.teacher_id,
-                ratings: teacher.ratings,
-                slots: []
-              };
+        selected_slots.forEach(slot => {
+          // console.log("Selected Slots:", selected_slots);
+          Object.keys(slot).forEach(dayKey => {
+            if (dayKey !== 'timeSlot' && slot[dayKey] === true) {
+              
+              const timeParts = slot.timeSlot.split('-');
+              if (timeParts.length === 2) {
+                from_time.push(timeParts[0].trim());
+                to_time.push(timeParts[1].trim());
+                day.push(dayKey);
+              }
             }
-            grouped[key].slots.push({
-              from_time: teacher.from_time,
-              to_time: teacher.to_time,
-              day: teacher.day,
-              id: teacher.id
-            });
           });
-
-          setGroupedTeachers(Object.values(grouped));
-        })
-        .catch(error => {
-          console.error("Error fetching teachers:", error);
         });
-    }
+
+        // Prepare payload for API call
+        const payload = {
+          course_id: parseInt(course_id),
+          student_id: parseInt(student_id),
+          from_time: from_time,
+          to_time: to_time,
+          day: day
+        };
+
+        console.log("API Payload:", payload);
+
+        // Make API call
+        const response = await axios.post(
+          'http://localhost/OnlineQuranServer/api/tutor/SearchTeacherMultipleSlots',
+          payload,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        console.log("API Response:", response.data);
+        setGroupedTeachers(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching filtered teachers:", err);
+        setError("Failed to fetch teachers. Please try again.");
+        setLoading(false);
+      }
+    };
+
+    fetchFilteredTeachers();
   }, []);
 
-  const HandleHireTeacher = (teacher) => {
-    // Gather all slot ids for this teacher
-    const slotids = teacher.slots.map(slot => slot.id);
-
-    console.log(slotids, localStorage.getItem("student_id"), localStorage.getItem("selected_course_id"), teacher.teacher_id);
-
-    const params = new URLSearchParams();
-    slotids.forEach(id => params.append('slotids', id));
-    params.append('student_id', localStorage.getItem("student_id"));
-    params.append('course_id', localStorage.getItem("selected_course_id"));
-    params.append('teacher_id', teacher.teacher_id);
-
-    axios.get(
-      `http://localhost/OnlineQuranServer/api/tutor/EnrollMultipleSlotsCourse?${params.toString()}`
-    )
-      .then((response) => {
-        alert("Teacher hired successfully!");
-        console.log("Teacher hired successfully:", response.data);
-      })
-      .catch((error) => {
-        if (error.response && error.response.data) {
-          alert(error.response.data.Message || "Error hiring teacher!");
-        } else {
-          alert("Error hiring teacher!");
+  const handleTeacherSelect = async (teacher) => {
+    try {
+      const student_id = localStorage.getItem("student_id");
+      const course_id = localStorage.getItem("selected_course_id");
+      
+      // Get slot IDs from the teacher data
+      const slotIds = teacher.id || [];
+      
+      // Call the enrollment API
+      const response = await axios.get(
+        `http://localhost/OnlineQuranServer/api/tutor/EnrollMultipleSlotsCourse`,
+        {
+          params: {
+            slotids: slotIds,
+            student_id: parseInt(student_id),
+            course_id: parseInt(course_id),
+            teacher_id: teacher.teacher_id
+          }
         }
-      });
+      );
+      
+      console.log("Enrollment successful:", response.data);
+      alert("Successfully enrolled with teacher!");
+      
+    } catch (error) {
+      console.error("Enrollment failed:", error);
+      if (error.response?.status === 400 && error.response.data === "Already Enrolled") {
+        alert("You are already enrolled with this teacher for this course.");
+      } else {
+        alert("Failed to enroll. Please try again.");
+      }
+    }
   };
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Filtered Teachers</h1>
+        <p>Loading available teachers...</p>
+      </div>
+    );
+  }
 
   return (
     <div>
       <h1>Filtered Teachers</h1>
       <h3 className="subheading">Click on a teacher to hire</h3>
       <div className="grid">
-        {groupedTeachers.length === 0 && <p>No teachers found for selected slots.</p>}
-        {groupedTeachers.map((teacher) => (
-          <div className="cards" key={teacher.teacher_id} onClick={() => { HandleHireTeacher(teacher); }}>
-            <div className="title">{teacher.name}</div>
-            <div>
-              <strong>Ratings:</strong> {teacher.ratings}
-            </div>
-            <div>
-              <strong>Slots:</strong>
-              <ul style={{ listStyle: "none", paddingLeft: 0 }}>
-                {teacher.slots.map((slot, idx) => (
-                  <li key={idx}>
-                    <span>
-                      <strong>Day:</strong> {slot.day} &nbsp;
-                      <strong>Time:</strong> {slot.from_time} - {slot.to_time}
-                    </span>
-                  </li>
+        {groupedTeachers && groupedTeachers.length > 0 ? (
+          groupedTeachers.map((teacher, index) => (
+            <div 
+              key={index} 
+              className="cards"
+              onClick={() => handleTeacherSelect(teacher)}
+              style={{ cursor: 'pointer' }}
+            >
+              <h3>{teacher.name}</h3>
+              <p><strong>Rating:</strong> {teacher.ratings || 'N/A'}</p>
+              <p><strong>Available Slots:</strong></p>
+              <span>
+                {teacher.day && teacher.day.map((day, i) => (
+                  <p key={i}>
+                    {day} - {teacher.from_time[i].substring(0, 5)} to {teacher.to_time[i].substring(0, 5)}
+                  </p>
                 ))}
-              </ul>
+              </span>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No teachers found for selected slots.</p>
+        )}
       </div>
     </div>
   );
