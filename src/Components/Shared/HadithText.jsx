@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const QuranText = () => {
+const HadithText = () => {
   const [lessonData, setLessonData] = useState(null);
-  const [selectedAyahId, setSelectedAyahId] = useState(null);
+  const [selectedHadithId, setSelectedHadithId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -69,13 +69,13 @@ const QuranText = () => {
   }, []);
 
   const handleSubmit = () => {
-    if (!lessonData || !lessonData[0]?.sessionId) {
+    if (!lessonData || !lessonData[0]?.sessonId) {
       alert("No active session to end");
       return;
     }
 
-    const sessionId = lessonData[0].sessionId;
-    const ayatNo = selectedAyahId || 0;
+    const sessionId = lessonData[0].sessonId;
+    const hadithNo = selectedHadithId || 0;
 
     axios
       .get(
@@ -83,14 +83,17 @@ const QuranText = () => {
         {
           params: {
             sessionId: parseInt(sessionId),
-            ayatNo: parseInt(ayatNo)
+            ayatNo: parseInt(hadithNo)
           }
         }
       )
       .then((response) => {
         alert("Session ended successfully!");
         // Clear session data and redirect
-        window.location.href = `/${localStorage.getItem("user_role")}/${localStorage.getItem("username")}/dashboard`;
+        localStorage.removeItem("enrollment_slot_id");
+        localStorage.removeItem("session_id");
+        localStorage.removeItem("user_role");
+        window.location.href = "/dashboard"; // or wherever you want to redirect
       })
       .catch((error) => {
         console.error("Error ending session:", error);
@@ -98,71 +101,89 @@ const QuranText = () => {
       });
   };
 
-  const handleAyahClick = (ayahId) => {
-    console.log(`Ayah ${ayahId} clicked`);
-    setSelectedAyahId(ayahId);
+  const handleHadithClick = (hadithId) => {
+    console.log(`Hadith ${hadithId} clicked`);
+    setSelectedHadithId(hadithId);
   };
 
   if (loading) {
     return (
-      <div className="lesson-container">
-        <h1>Initializing Session...</h1>
-        <p>Please wait...</p>
+      <div className="hadith-loading">
+        Initializing Session...
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="lesson-container">
-        <h1>Error</h1>
-        <p className="error">{error}</p>
-        <button onClick={() => window.location.reload()}>Retry</button>
+      <div className="hadith-container">
+        <div className="hadith-header">
+          <h1>Error</h1>
+          <p>{error}</p>
+          <button onClick={() => window.location.reload()}>Retry</button>
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="lesson-container">
-      <div className="lesson-header">
-        <h1>Quran Lesson</h1>
-        <h3 className="subheading">Session ID: {lessonData?.[0]?.sessionId}</h3>
-        <div className="lesson-info">
-          <span>Surah {lessonData?.[0]?.surah_id}</span>
-          <span>Ruku {lessonData?.[0]?.Ruku_id}</span>
+  if (!lessonData || lessonData.length === 0) {
+    return (
+      <div className="hadith-container">
+        <div className="hadith-header">
+          <h1>No Hadith Found</h1>
+          <p>No Hadith lessons available for this session.</p>
         </div>
       </div>
+    );
+  }
 
-      {lessonData && lessonData.length > 0 ? (
-        <div className="lesson-content">
-          {lessonData.map((ayah, index) => (
-            <div
-              key={index}
-              className={`ayah-card ${
-                selectedAyahId === ayah.Ayah_id ? "ayah-selected" : ""
-              }`}
-              onClick={() => handleAyahClick(ayah.Ayah_id)}
-            >
-              <div className="ayah-number">{ayah.Ayah_id}</div>
-              <div className="ayah-content">
-                <p className="arabic-text">{ayah.AyahText}</p>
-                <div className="ayah-details">
-                  <span className="surah-name">Surah {ayah.surah_id}</span>
-                  <span className="ruku-name">Ruku {ayah.Ruku_id}</span>
-                  <span className="ayah-id">Ayah {ayah.Ayah_id}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+  const topic = lessonData[0]?.TopicName || "Hadith Lesson";
+
+  return (
+    <div className="hadith-container">
+      <div className="hadith-header">
+        <h1>Hadith Lessons</h1>
+        <div className="topic-info">Topic: {topic}</div>
+        <div className="lesson-info">
+          <span>Session ID: {lessonData[0]?.sessonId}</span>
+          <span>Book: {lessonData[0]?.book_name}</span>
         </div>
-      ) : (
-        <p>No lesson content available</p>
+      </div>
+      
+      <div className="hadith-content">
+        {lessonData.map((hadith, index) => (
+          <div 
+            key={hadith.id} 
+            className={`hadith-card ${
+              selectedHadithId === hadith.id ? "ayah-selected" : ""
+            }`}
+            onClick={() => handleHadithClick(hadith.id)}
+          >
+            <div className="hadith-meta">
+              <h3>Reference: </h3>
+              <span className="hadith-book">Book: {hadith.book_name}</span>
+              <span className="hadith-volume">Volume: {hadith.Volume}</span>
+              <span className="hadith-book">Hadith: {hadith.hadith_index}</span>
+            </div>
+            
+            <div className="narrator-text">
+              {hadith.narrator}
+            </div>
+            
+            <div className="hadith-text">
+              {hadith.hadith_text}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {localStorage.getItem("user_role") === "Teacher" && (
+        <button className="floating-button" onClick={handleSubmit}>
+          End Session
+        </button>
       )}
-      {localStorage.getItem("user_role") === "Teacher" && <button className="floating-button" onClick={handleSubmit}>
-        End Session
-      </button>}
     </div>
   );
 };
 
-export default QuranText;
+export default HadithText;

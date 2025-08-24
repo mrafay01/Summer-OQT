@@ -22,7 +22,10 @@ const ChildCourses = () => {
 
   const handleCourseClick = (course) => {
     localStorage.setItem("enrollment_id", course.enrollment_id);
-    Navigate("/view-lessons");
+    if(course.course_id == 5)
+      Navigate("/view-hadith-lessons");
+    else
+      Navigate("/view-quran-lessons");
   };
 
   return (

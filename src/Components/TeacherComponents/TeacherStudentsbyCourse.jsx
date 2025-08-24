@@ -15,9 +15,10 @@ const TeacherStudentsbyCourse = () => {
       )
       .then((response) => {
         const filteredStudents = response.data.filter(
-          enrollment => enrollment.course_id === parseInt(localStorage.getItem("selected_course_id"))
+          enrollment => enrollment.course_id == parseInt(localStorage.getItem("selected_course_id"))
         );
         setStudents(filteredStudents);
+        console.log(filteredStudents);
       })
       .catch((error) => {
         console.error("Error fetching teacher courses:", error);
@@ -26,22 +27,26 @@ const TeacherStudentsbyCourse = () => {
 
   const handleStudentClick = (stude) => {
     localStorage.setItem("id", localStorage.getItem("id"));
-    localStorage.setItem("enrollment_slot_id", stude.enrollment_slot_id);
+    localStorage.setItem("enrollment_slot_id", stude.id);
     localStorage.setItem("user_role", "Teacher");
-    navigate("/view-quran-lesson-text");
+    if(stude.course_id  == 5)
+      navigate("/view-hadith-lesson-text");
+    else
+      navigate("/view-quran-lesson-text");
   };
 
   return (
     <div>
       <h1>Your Students for {localStorage.getItem("course_name")}</h1>
       <h3 className="subheading">
-        Click on the Student to view their progress and Course lessons
+        Click on the Slot to start the Session
       </h3>
       <div className="grid">
       {students.length > 0 ? (
         students.map((stude, idx) => (
           <div className="cards" key={idx} onClick={() => handleStudentClick(stude)}>
             <h3>{stude.StudentName}</h3>
+            {console.log("Stude, ", stude)}
             <p>{stude.CourseName}</p>
             <p>
               Slot: {stude.from_time.substring(0, 5)} - {stude.to_time.substring(0, 5)} on {stude.Day}

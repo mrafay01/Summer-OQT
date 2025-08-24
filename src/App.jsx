@@ -11,7 +11,7 @@ import TeacherStudentsbyCourse from './Components/TeacherComponents/TeacherStude
 import TeacherSchedule from './Components/TeacherComponents/TeacherSchedule.jsx';
 import StudentSchedule from './Components/Student Components/StudentSchedule.jsx';
 import HadithBooks from './Components/Shared/HadithBooks.jsx';
-import ViewLessons from './Components/Shared/ViewLessons.jsx';
+import ViewQuranLessons from './Components/Shared/ViewQuranLessons.jsx';
 import QuranText from './Components/Shared/QuranText.jsx';
 import AttachChild from './Components/Parent Components/AttachChild.jsx';
 import JoinSession from './Components/Student Components/JoinSession.jsx';
@@ -19,6 +19,10 @@ import ChildCourses from './Components/Parent Components/ChildCourses.jsx';
 import ViewChild from './Components/Parent Components/ViewChild.jsx';
 import ViewSession from './Components/Parent Components/ViewSession.jsx';
 import StudentCourses from './Components/Student Components/StudentCourses.jsx';
+import ViewHadithLessons from './Components/Shared/ViewHadithLessons.jsx';
+import ViewHadiths from './Components/Shared/Hadiths.jsx';
+import ViewHadithText from './Components/Shared/HadithText.jsx'
+import ViewQuran from './Components/Shared/Quran.jsx'
 
 function App() {
 
@@ -38,8 +42,12 @@ function App() {
         <Route path='/Teacher/students-by-course' element={<TeacherStudentsbyCourse />} />
         <Route path='/Teacher/schedule' element={<TeacherSchedule />} />
         <Route path='/hadith-books' element={<HadithBooks />} />
-        <Route path='/view-lessons' element={<ViewLessons />} />
+        <Route path='/view-quran-lessons' element={<ViewQuranLessons />} />
+        <Route path='/view-hadith-lessons' element={<ViewHadithLessons />} />
+        <Route path='/view-hadith-text' element={<ViewHadiths />} />
+        <Route path='/view-hadith-lesson-text' element={<ViewHadithText />} />
         <Route path='/view-quran-lesson-text' element={<QuranText />} />
+        <Route path='/view-quran-text' element={<ViewQuran />} />
         <Route path='/my-kids' element={<AttachChild />} />        
         <Route path='/join-session' element={<JoinSession />} />
         <Route path='/view-kids-courses' element={<ChildCourses />} />

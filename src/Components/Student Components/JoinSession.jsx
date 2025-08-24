@@ -37,7 +37,10 @@ const JoinSession = () => {
       localStorage.setItem("enrollment_slot_id", session.EnrollmentSlot_Id);
       localStorage.setItem("session_id", session.id);
       localStorage.setItem("user_role", "Student");
-      navigate("/view-quran-lesson-text");
+      if(session.isHadith)
+        navigate("/view-hadith-lesson-text")
+      else
+        navigate("/view-quran-lesson-text");
     }
   };
 

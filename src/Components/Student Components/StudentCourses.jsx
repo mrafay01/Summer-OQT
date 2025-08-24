@@ -10,8 +10,13 @@ const StudentCourses = () => {
   useEffect(()=>{
     axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${localStorage.getItem("student_id")}`)
     .then(response => {
-        console.log(response.data);
-        setData(response.data);
+        const uniqueCourses = response.data.filter((course, index, self) =>
+            index === self.findIndex((t) => (
+                t.course_id === course.course_id
+            ))
+        );
+        console.log(uniqueCourses);
+        setData(uniqueCourses);
     })
     .catch(error => {
         console.log(error.response.data)
@@ -20,7 +25,11 @@ const StudentCourses = () => {
 
   const handleCardClick = (course) => {
     localStorage.setItem("enrollment_id", course.enrollment_id);
-    navigate(`/view-lessons`);
+    localStorage.setItem("course_id", course.course_id);
+    if(course.course_id == 5)
+      navigate(`/view-hadith-lessons`);
+    else
+      navigate(`/view-quran-lessons`);
   };
 
     return (
@@ -32,7 +41,7 @@ const StudentCourses = () => {
                 data.length > 0 ? data.map((course, idx) => (
                     <div key={idx} className="cards" onClick={() => handleCardClick(course)}>
                         <h3>{course.CourseName}</h3>
-                        <p>{course.TeacherName}</p>
+                        <p>By Teacher: <i>{course.TeacherName}</i></p>
                     </div>
                 )) : <p>No courses found</p>
             }

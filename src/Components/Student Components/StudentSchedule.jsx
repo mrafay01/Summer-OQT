@@ -35,8 +35,7 @@ const StudentSchedule = () => {
             <th>Teacher</th>
             <th>Day</th>
             <th>Time Slot</th>
-            <th>Start Date</th>
-            <th>Finish Date</th>
+            <th>Course Started Date</th>
           </tr>
         </thead>
         <tbody>
@@ -50,9 +49,6 @@ const StudentSchedule = () => {
                 5
               )} - ${slot.to_time?.substring(0, 5)}`}</td>
               <td>{slot.start_date ? slot.start_date.substring(0, 10) : ""}</td>
-              <td>
-                {slot.finish_date ? slot.finish_date.substring(0, 10) : ""}
-              </td>
             </tr>
           ))}
         </tbody>
