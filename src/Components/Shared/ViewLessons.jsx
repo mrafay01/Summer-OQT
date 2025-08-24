@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const ViewLessons = () => {
   const navigate = useNavigate();
   const [lessons, setLessons] = useState([]);
+  const [remainingLessons, setRemainingLessons] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,6 +32,23 @@ const ViewLessons = () => {
         console.log("Quran course lessons fetched successfully:", response.data);
         setLessons(response.data);
         setLoading(false);
+
+        axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetQuranCourseLessonsRemaining`, {
+          params: {
+            enrollmentId: parseInt(enrollmentId)
+          }
+        })
+        .then(response => {
+          console.log("Quran course remaining lessons fetched successfully:", response.data);
+          setRemainingLessons(response.data);
+        })
+        .catch(err => {
+          console.error("Error fetching Quran remaining course lessons:", err);
+          setError("Failed to fetch lessons");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
       } catch (err) {
         console.error("Error fetching Quran course lessons:", err);
         setError("Failed to fetch lessons");
@@ -41,15 +59,6 @@ const ViewLessons = () => {
     fetchLessons();
   }, []);
 
-  const HandleQuranLesson = (lesson) => {
-    // Store lesson information and navigate to lesson view
-    localStorage.setItem("selected_lesson_id", lesson.QuranLessonId);
-    localStorage.setItem("selected_lesson_status", lesson.Status);
-    localStorage.setItem("selected_enrollment_slot_id", lesson.EnrollmentSlotId);
-    
-    // Navigate to lesson view (you can customize this route)
-    navigate("/lesson-details");
-  };
 
   if (loading) {
     return (
@@ -80,7 +89,6 @@ const ViewLessons = () => {
           {lessons.map((lesson, idx) => (
             <div
               key={idx}
-              onClick={() => HandleQuranLesson(lesson)}
               className="lessons-cards"
             >
               <h3>Lesson {idx + 1}</h3>
@@ -94,6 +102,23 @@ const ViewLessons = () => {
         </div>
       ) : (
         <h2 style={{ textAlign: "center" }}>No completed lessons found.</h2>
+      )}
+
+      <h3 className="subheading">Remaining Lessons</h3>
+      {remainingLessons.length > 0 ? (
+        <div className="lessons-grid">
+          {remainingLessons.map((remaininglessons, idx) => (
+            <div
+              key={idx}
+              className="lessons-cards"
+            >
+              <h3>Surah {remaininglessons.SurahName}</h3>
+              <p>Lesson: {remaininglessons.SurahNo}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <h2 style={{ textAlign: "center" }}>No remaining lessons found.</h2>
       )}
     </div>
   );

@@ -18,6 +18,7 @@ import JoinSession from './Components/Student Components/JoinSession.jsx';
 import ChildCourses from './Components/Parent Components/ChildCourses.jsx';
 import ViewChild from './Components/Parent Components/ViewChild.jsx';
 import ViewSession from './Components/Parent Components/ViewSession.jsx';
+import StudentCourses from './Components/Student Components/StudentCourses.jsx';
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
         <Route path='/view-kids-courses' element={<ChildCourses />} />
         <Route path='/kids-schedule' element={<ViewChild />} />
         <Route path='/view-session' element={<ViewSession />} />
+        <Route path='/view-courses-progress' element={<StudentCourses />} />
       </Routes>
     </Router>
   )

@@ -29,7 +29,7 @@ const AllCourses = () => {
   const handleViewLessons = () => {
     localStorage.setItem("student_id", localStorage.getItem("id"));
     localStorage.setItem("userrole", localStorage.getItem("Role"));
-    navigate("/view-course-progress");
+    navigate("/view-courses-progress");
   };
 
   return (
