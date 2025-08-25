@@ -7,10 +7,10 @@ const StudentSchedule = () => {
 
   useEffect(() => {
     let studentid;
-    if (localStorage.getItem("role") === "Parent") {
-      studentid = localStorage.getItem("student_id");
+    if (sessionStorage.getItem("role") === "Parent") {
+      studentid = sessionStorage.getItem("student_id");
     } else {
-      studentid = localStorage.getItem("id");
+      studentid = sessionStorage.getItem("id");
     }
 
     axios

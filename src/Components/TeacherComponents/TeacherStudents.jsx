@@ -12,7 +12,7 @@ const TeacherStudents = () => {
         `http://localhost/OnlineQuranServer/api/tutor/GetTeacherCurrentEnrollmentsDetail`,
         {
           params: {
-            teacher_id: localStorage.getItem("id")
+            teacher_id: sessionStorage.getItem("id")
           }
         }
       )

@@ -8,7 +8,7 @@ const HadithBooks = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const courseId = Number(localStorage.getItem("selected_course_id"));
+    const courseId = Number(sessionStorage.getItem("selected_course_id"));
     setCourseId(courseId);
     console.log("Selected at useEffect course ID:", courseId);
     axios
@@ -24,8 +24,8 @@ const HadithBooks = () => {
 
   const handleBookClick = (bookName) => {
     console.log("Selected after setting Book course ID:", courseId);
-    localStorage.setItem("selected_course_id", courseId);
-    localStorage.setItem("selected_book_name", bookName);
+    sessionStorage.setItem("selected_course_id", courseId);
+    sessionStorage.setItem("selected_book_name", bookName);
     navigate("/view-lessons");
   };
 

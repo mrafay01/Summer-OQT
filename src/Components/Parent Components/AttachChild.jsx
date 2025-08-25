@@ -10,7 +10,7 @@ const AttachChild = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost/OnlineQuranServer/api/tutor/GetParentStudents?parent_id=${localStorage.getItem(
+        `http://localhost/OnlineQuranServer/api/tutor/GetParentStudents?parent_id=${sessionStorage.getItem(
           "id"
         )}`
       )
@@ -26,7 +26,7 @@ const AttachChild = () => {
   const handleAttach = (studentUserName) => {
     axios
       .get(
-        `http://localhost/OnlineQuranServer/api/tutor/AttachParentToStudent?studentUserName=${studentUserName}&parent_id=${localStorage.getItem(
+        `http://localhost/OnlineQuranServer/api/tutor/AttachParentToStudent?studentUserName=${studentUserName}&parent_id=${sessionStorage.getItem(
           "id"
         )}`
       )
@@ -40,7 +40,7 @@ const AttachChild = () => {
   };
 
   const handleCourseProgress = (sid) => {
-    localStorage.setItem("student_id", sid);
+    sessionStorage.setItem("student_id", sid);
     Navigate("/view-kids-courses");
   };
 

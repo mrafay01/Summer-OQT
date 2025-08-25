@@ -7,7 +7,7 @@ const SetStudentSchedule = () => {
   const navigate = useNavigate();
   const [slots, setSlots] = useState([]);
   const [days, setDays] = useState([]);
-  const courseId = localStorage.getItem("selected_course_id");
+  const courseId = sessionStorage.getItem("selected_course_id");
 
   useEffect(() => {
     axios
@@ -43,8 +43,8 @@ const SetStudentSchedule = () => {
 
   // Handler to save and send selected slots to next screen
   const handleSaveChanges = () => {
-    localStorage.setItem("selected_slots", JSON.stringify(slots));
-    localStorage.setItem("selected_course_id", courseId);
+    sessionStorage.setItem("selected_slots", JSON.stringify(slots));
+    sessionStorage.setItem("selected_course_id", courseId);
 
     // Debug logs
     console.log("Saved selected_slots:", slots);

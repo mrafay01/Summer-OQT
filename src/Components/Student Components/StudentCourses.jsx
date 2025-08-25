@@ -8,7 +8,7 @@ const StudentCourses = () => {
   const navigate = useNavigate();
   
   useEffect(()=>{
-    axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${localStorage.getItem("student_id")}`)
+    axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${sessionStorage.getItem("student_id")}`)
     .then(response => {
         const uniqueCourses = response.data.filter((course, index, self) =>
             index === self.findIndex((t) => (
@@ -24,8 +24,8 @@ const StudentCourses = () => {
   }, [])
 
   const handleCardClick = (course) => {
-    localStorage.setItem("enrollment_id", course.enrollment_id);
-    localStorage.setItem("course_id", course.course_id);
+    sessionStorage.setItem("enrollment_id", course.enrollment_id);
+    sessionStorage.setItem("course_id", course.course_id);
     if(course.course_id == 5)
       navigate(`/view-hadith-lessons`);
     else

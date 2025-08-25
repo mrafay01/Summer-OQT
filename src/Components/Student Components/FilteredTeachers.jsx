@@ -11,9 +11,9 @@ const FilteredTeachers = () => {
   useEffect(() => {
     const fetchFilteredTeachers = async () => {
       try {
-        const course_id = localStorage.getItem("selected_course_id");
-        const student_id = localStorage.getItem("student_id");
-        const selected_slots = JSON.parse(localStorage.getItem("selected_slots"));
+        const course_id = sessionStorage.getItem("selected_course_id");
+        const student_id = sessionStorage.getItem("student_id");
+        const selected_slots = JSON.parse(sessionStorage.getItem("selected_slots"));
 
         // Transform selected_slots data to match API format
         const from_time = [];
@@ -72,8 +72,8 @@ const FilteredTeachers = () => {
 
   const handleTeacherSelect = async (teacher) => {
     try {
-      const student_id = localStorage.getItem("student_id");
-      const course_id = localStorage.getItem("selected_course_id");
+      const student_id = sessionStorage.getItem("student_id");
+      const course_id = sessionStorage.getItem("selected_course_id");
       
       // Get slot IDs from the teacher data
       const slotIds = teacher.id || [];

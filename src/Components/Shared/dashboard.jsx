@@ -6,15 +6,15 @@ const dashboard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const userRole = localStorage.getItem("role");
+    const userRole = sessionStorage.getItem("role");
     setSelectUser(userRole ? userRole : "Student");
   }, []);
 
-  // Handles navigation and saves parameters to localStorage
+  // Handles navigation and saves parameters to sessionStorage
   const handleCardClick = (cardIndex) => {
-    localStorage.setItem("role", selectUser);
-    localStorage.setItem("username", localStorage.getItem("username"));
-    localStorage.setItem("id", localStorage.getItem("id"));
+    sessionStorage.setItem("role", selectUser);
+    sessionStorage.setItem("username", sessionStorage.getItem("username"));
+    sessionStorage.setItem("id", sessionStorage.getItem("id"));
 
     if (cardIndex === 0) {
       if (selectUser === "Teacher") navigate("/Teacher/Students");
@@ -24,7 +24,7 @@ const dashboard = () => {
         navigate(`/${selectUser}/schedule`);
       else navigate("/kids-schedule");
     } else if (cardIndex === 2) {
-      // All parameters are already in localStorage
+      // All parameters are already in sessionStorage
       if (selectUser === "Teacher") navigate("/Teacher-courses");
       else navigate(`/Student-courses`);
     } else if (cardIndex === 3) {

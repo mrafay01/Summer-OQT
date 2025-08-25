@@ -9,7 +9,7 @@ const ViewChild = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost/OnlineQuranServer/api/tutor/GetParentStudents?parent_id=${localStorage.getItem(
+        `http://localhost/OnlineQuranServer/api/tutor/GetParentStudents?parent_id=${sessionStorage.getItem(
           "id"
         )}`
       )
@@ -23,8 +23,8 @@ const ViewChild = () => {
   }, []);
 
 const handleViewSchedule = (studentId) => {
-    localStorage.setItem("student_id", studentId);
-    localStorage.setItem("role", "Parent");
+    sessionStorage.setItem("student_id", studentId);
+    sessionStorage.setItem("role", "Parent");
     Navigate("/Student/Schedule");
   };
 

@@ -12,7 +12,7 @@ const ViewHadithLessons = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const enrollmentId = localStorage.getItem("enrollment_id");
+        const enrollmentId = sessionStorage.getItem("enrollment_id");
 
         if (!enrollmentId) {
           setError("No enrollment ID found");
@@ -92,13 +92,13 @@ const ViewHadithLessons = () => {
   }
 
   const handleLessonClick = (topic) => {
-    localStorage.setItem("Topic", topic);
+    sessionStorage.setItem("Topic", topic);
     navigate(`/view-hadith-text`);
   };
 
   return (
     <div>
-      <h1>{localStorage.getItem("selected_course_name")} Completed Lessons</h1>
+      <h1>{sessionStorage.getItem("selected_course_name")} Completed Lessons</h1>
       <h3 className="subheading">Select a lesson to view its content</h3>
 
       {lessons.length > 0 ? (

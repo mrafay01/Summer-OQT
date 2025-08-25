@@ -10,8 +10,8 @@ const HadithText = () => {
   useEffect(() => {
     const initializeSession = async () => {
       try {
-        const userRole = localStorage.getItem("user_role");
-        const enrollmentSlotId = localStorage.getItem("enrollment_slot_id");
+        const userRole = sessionStorage.getItem("user_role");
+        const enrollmentSlotId = sessionStorage.getItem("enrollment_slot_id");
 
         if (!enrollmentSlotId) {
           setError("No enrollment slot ID found");
@@ -34,8 +34,8 @@ const HadithText = () => {
           setLessonData(response.data);
         } else if (userRole === "Parent" || userRole === "Student") {
           // Parent or Student joins an existing session
-          const sessionId = localStorage.getItem("session_id");
-          
+          const sessionId = sessionStorage.getItem("session_id");
+
           if (!sessionId) {
             setError("No session ID found");
             setLoading(false);
@@ -56,7 +56,7 @@ const HadithText = () => {
         } else {
           setError("Invalid user role");
         }
-        
+
         setLoading(false);
       } catch (err) {
         console.error("Error initializing session:", err);
@@ -66,6 +66,39 @@ const HadithText = () => {
     };
 
     initializeSession();
+
+    const checkSessionStatus = async () => {
+      try {
+        const userRole = sessionStorage.getItem("user_role");
+        const sessionId = sessionStorage.getItem("session_id");
+
+        // only Students & Parents need to check if teacher ended the session
+        if ((userRole === "Parent" || userRole === "Student") && sessionId) {
+          const response = await axios.get(
+            `http://localhost/OnlineQuranServer/api/tutor/isSessionEnded`,
+            { params: { sessionId: parseInt(sessionId) } }
+          );
+
+          if (response.data === true) {
+            alert("The session has been ended by the Teacher.");
+            sessionStorage.removeItem("enrollment_slot_id");
+            sessionStorage.removeItem("session_id");
+            sessionStorage.removeItem("user_role");
+            navigate("/"); // or home screen
+            return;
+          }
+        }
+      } catch (error) {
+        console.error("Error checking session status:", error);
+      }
+    };
+
+    // check immediately when component loads
+    checkSessionStatus();
+
+    // keep checking every 7 seconds
+    const interval = setInterval(checkSessionStatus, 7000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = () => {
@@ -78,21 +111,18 @@ const HadithText = () => {
     const hadithNo = selectedHadithId || 0;
 
     axios
-      .get(
-        `http://localhost/OnlineQuranServer/api/tutor/EndSession`,
-        {
-          params: {
-            sessionId: parseInt(sessionId),
-            ayatNo: parseInt(hadithNo)
-          }
-        }
-      )
+      .get(`http://localhost/OnlineQuranServer/api/tutor/EndSession`, {
+        params: {
+          sessionId: parseInt(sessionId),
+          ayatNo: parseInt(hadithNo),
+        },
+      })
       .then((response) => {
         alert("Session ended successfully!");
         // Clear session data and redirect
-        localStorage.removeItem("enrollment_slot_id");
-        localStorage.removeItem("session_id");
-        localStorage.removeItem("user_role");
+        sessionStorage.removeItem("enrollment_slot_id");
+        sessionStorage.removeItem("session_id");
+        sessionStorage.removeItem("user_role");
         window.location.href = "/dashboard"; // or wherever you want to redirect
       })
       .catch((error) => {
@@ -107,11 +137,7 @@ const HadithText = () => {
   };
 
   if (loading) {
-    return (
-      <div className="hadith-loading">
-        Initializing Session...
-      </div>
-    );
+    return <div className="hadith-loading">Initializing Session...</div>;
   }
 
   if (error) {
@@ -149,11 +175,11 @@ const HadithText = () => {
           <span>Book: {lessonData[0]?.book_name}</span>
         </div>
       </div>
-      
+
       <div className="hadith-content">
         {lessonData.map((hadith, index) => (
-          <div 
-            key={hadith.id} 
+          <div
+            key={hadith.id}
             className={`hadith-card ${
               selectedHadithId === hadith.id ? "ayah-selected" : ""
             }`}
@@ -165,19 +191,15 @@ const HadithText = () => {
               <span className="hadith-volume">Volume: {hadith.Volume}</span>
               <span className="hadith-book">Hadith: {hadith.hadith_index}</span>
             </div>
-            
-            <div className="narrator-text">
-              {hadith.narrator}
-            </div>
-            
-            <div className="hadith-text">
-              {hadith.hadith_text}
-            </div>
+
+            <div className="narrator-text">{hadith.narrator}</div>
+
+            <div className="hadith-text">{hadith.hadith_text}</div>
           </div>
         ))}
       </div>
-      
-      {localStorage.getItem("user_role") === "Teacher" && (
+
+      {sessionStorage.getItem("user_role") === "Teacher" && (
         <button className="floating-button" onClick={handleSubmit}>
           End Session
         </button>

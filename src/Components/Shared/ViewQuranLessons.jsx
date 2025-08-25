@@ -13,7 +13,7 @@ const ViewQuranLessons = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const enrollmentId = localStorage.getItem("enrollment_id");
+        const enrollmentId = sessionStorage.getItem("enrollment_id");
 
         if (!enrollmentId) {
           setError("No enrollment ID found");
@@ -108,14 +108,14 @@ const ViewQuranLessons = () => {
   }
 
   const handleLessonClick = (lesson) => {
-    localStorage.setItem("ruku_id", lesson.RukuNo);
-    localStorage.setItem("surah_id", lesson.SurahNo);
+    sessionStorage.setItem("ruku_id", lesson.RukuNo);
+    sessionStorage.setItem("surah_id", lesson.SurahNo);
     navigate(`/view-quran-text`);
   };
 
   return (
     <div>
-      <h1>{localStorage.getItem("selected_course_name")} Lessons</h1>
+      <h1>{sessionStorage.getItem("selected_course_name")} Lessons</h1>
       <h3 className="subheading">Completed Lessons</h3>
 
       {lessons.length > 0 ? (

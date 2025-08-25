@@ -9,13 +9,13 @@ const TeacherStudentsbyCourse = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost/OnlineQuranServer/api/tutor/GetTeacherCurrentEnrollmentsDetail?teacher_id=${localStorage.getItem(
+        `http://localhost/OnlineQuranServer/api/tutor/GetTeacherCurrentEnrollmentsDetail?teacher_id=${sessionStorage.getItem(
           "id"
         )}`
       )
       .then((response) => {
         const filteredStudents = response.data.filter(
-          enrollment => enrollment.course_id == parseInt(localStorage.getItem("selected_course_id"))
+          enrollment => enrollment.course_id == parseInt(sessionStorage.getItem("selected_course_id"))
         );
         setStudents(filteredStudents);
         console.log(filteredStudents);
@@ -26,9 +26,9 @@ const TeacherStudentsbyCourse = () => {
   }, []);
 
   const handleStudentClick = (stude) => {
-    localStorage.setItem("id", localStorage.getItem("id"));
-    localStorage.setItem("enrollment_slot_id", stude.id);
-    localStorage.setItem("user_role", "Teacher");
+    sessionStorage.setItem("id", sessionStorage.getItem("id"));
+    sessionStorage.setItem("enrollment_slot_id", stude.id);
+    sessionStorage.setItem("user_role", "Teacher");
     if(stude.course_id  == 5)
       navigate("/view-hadith-lesson-text");
     else
@@ -37,7 +37,7 @@ const TeacherStudentsbyCourse = () => {
 
   return (
     <div>
-      <h1>Your Students for {localStorage.getItem("course_name")}</h1>
+      <h1>Your Students for {sessionStorage.getItem("course_name")}</h1>
       <h3 className="subheading">
         Click on the Slot to start the Session
       </h3>

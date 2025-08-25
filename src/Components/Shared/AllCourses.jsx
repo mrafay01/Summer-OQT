@@ -18,17 +18,17 @@ const AllCourses = () => {
       });
   }, []);
 
-  // Save course info to localStorage and navigate
+  // Save course info to sessionStorage and navigate
   const handleCourseClick = (courseId) => {
-    localStorage.setItem("selected_course_id", courseId);
-    localStorage.setItem("student_id", localStorage.getItem("id"));
-    localStorage.setItem("userrole", localStorage.getItem("Role"));
+    sessionStorage.setItem("selected_course_id", courseId);
+    sessionStorage.setItem("student_id", sessionStorage.getItem("id"));
+    sessionStorage.setItem("userrole", sessionStorage.getItem("Role"));
     navigate("/set-student-schedule");
   };
 
   const handleViewLessons = () => {
-    localStorage.setItem("student_id", localStorage.getItem("id"));
-    localStorage.setItem("userrole", localStorage.getItem("Role"));
+    sessionStorage.setItem("student_id", sessionStorage.getItem("id"));
+    sessionStorage.setItem("userrole", sessionStorage.getItem("Role"));
     navigate("/view-courses-progress");
   };
 

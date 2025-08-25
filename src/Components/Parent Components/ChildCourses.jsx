@@ -9,7 +9,7 @@ const ChildCourses = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${localStorage.getItem("student_id")}`
+        `http://localhost/OnlineQuranServer/api/tutor/GetStudentCurrentEnrollments?student_id=${sessionStorage.getItem("student_id")}`
       )
       .then((response) => {
         setDetails(response.data);
@@ -21,7 +21,7 @@ const ChildCourses = () => {
   }, []);
 
   const handleCourseClick = (course) => {
-    localStorage.setItem("enrollment_id", course.enrollment_id);
+    sessionStorage.setItem("enrollment_id", course.enrollment_id);
     if(course.course_id == 5)
       Navigate("/view-hadith-lessons");
     else

@@ -10,7 +10,7 @@ const TeacherSchedule = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/OnlineQuranServer/api/tutor/GetTeacherSlots?teacher_id=${localStorage.getItem("id")}`)
+      .get(`http://localhost/OnlineQuranServer/api/tutor/GetTeacherSlots?teacher_id=${sessionStorage.getItem("id")}`)
       .then((res) => {
         setSlots(res.data);
 
@@ -45,7 +45,7 @@ const TeacherSchedule = () => {
         "http://localhost/OnlineQuranServer/api/tutor/ManageMultipleSlot",
         slots
       );
-      localStorage.setItem("selected_slots", JSON.stringify(slots));
+      sessionStorage.setItem("selected_slots", JSON.stringify(slots));
       alert("Slots saved successfully!");
     } catch (error) {
       console.error("Error saving slots:", error);

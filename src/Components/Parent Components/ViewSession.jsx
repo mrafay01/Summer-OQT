@@ -11,7 +11,7 @@ const ViewSession = () => {
   useEffect(() => {
     const fetchStudentsAndSessions = async () => {
       try {
-        const parentId = localStorage.getItem("id");
+        const parentId = sessionStorage.getItem("id");
         
         if (!parentId) {
           console.error("Parent ID not found");
@@ -79,9 +79,9 @@ const ViewSession = () => {
   const handleJoinSession = (sessionData) => {
     if (sessionData) {
       // Store session info and navigate to lesson
-      localStorage.setItem("enrollment_slot_id", sessionData.session.EnrollmentSlot_Id);
-      localStorage.setItem("session_id", sessionData.session.id);
-      localStorage.setItem("user_role", "Parent");
+      sessionStorage.setItem("enrollment_slot_id", sessionData.session.EnrollmentSlot_Id);
+      sessionStorage.setItem("session_id", sessionData.session.id);
+      sessionStorage.setItem("user_role", "Parent");
       navigate("/view-quran-lesson-text");
     }
   };

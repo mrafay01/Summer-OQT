@@ -29,10 +29,10 @@ const loginsignup = () => {
       .then((response) => {
         const data = response.data;
         if (CheckLogin(response.data)) {
-          localStorage.setItem("id", data.id);
-          localStorage.setItem("username", data.username);
-          localStorage.setItem("name", data.name);
-          localStorage.setItem("role", selectUser);
+          sessionStorage.setItem("id", data.id);
+          sessionStorage.setItem("username", data.username);
+          sessionStorage.setItem("name", data.name);
+          sessionStorage.setItem("role", selectUser);
           navigate(`/${selectUser}/${username}/dashboard`);
         }
       })
@@ -97,10 +97,10 @@ const loginsignup = () => {
         { headers: { "Content-Type": "application/json" } }
       )
       .then((response) => {
-        localStorage.setItem("id", response.data.id);
-        localStorage.setItem("username", response.data.username);
-        localStorage.setItem("name", response.data.name);
-        localStorage.setItem("role", selectUser);
+        sessionStorage.setItem("id", response.data.id);
+        sessionStorage.setItem("username", response.data.username);
+        sessionStorage.setItem("name", response.data.name);
+        sessionStorage.setItem("role", selectUser);
         if (selectUser !== "Teacher") navigate(`/${selectUser}/${username}/dashboard`);
         else navigate(`/teacherextrasignup`);
       })

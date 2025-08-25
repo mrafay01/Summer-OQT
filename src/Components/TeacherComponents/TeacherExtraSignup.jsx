@@ -18,19 +18,19 @@ const TeacherExtraSignup = () => {
   ];
 
   useEffect(() => {
-    const getrole = localStorage.getItem("role");
+    const getrole = sessionStorage.getItem("role");
     if (getrole) {
       setRole(getrole);
     }
-    const getname = localStorage.getItem("name");
+    const getname = sessionStorage.getItem("name");
     if (getname) {
       setName(getname);
     }
-    const getusername = localStorage.getItem("username");
+    const getusername = sessionStorage.getItem("username");
     if (getusername) {
       setUsername(getusername);
     }
-    const getid = Number(localStorage.getItem("id"));
+    const getid = Number(sessionStorage.getItem("id"));
     if (getid) {
       setId(getid);
     }

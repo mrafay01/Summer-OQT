@@ -7,7 +7,7 @@ const Hadiths = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const topic = localStorage.getItem("Topic");
+    const topic = sessionStorage.getItem("Topic");
 
     axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetHadith?topicName=${topic}`)
       .then((response) => {
@@ -52,7 +52,7 @@ const Hadiths = () => {
     );
   }
 
-  const topic = localStorage.getItem("Topic");
+  const topic = sessionStorage.getItem("Topic");
 
   return (
     <div className="hadith-container">

@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 const QuranText = () => {
   const [lessonData, setLessonData] = useState(null);
   const [selectedAyahId, setSelectedAyahId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const initializeSession = async () => {
       try {
-        const userRole = localStorage.getItem("user_role");
-        const enrollmentSlotId = localStorage.getItem("enrollment_slot_id");
+        const userRole = sessionStorage.getItem("user_role");
+        const enrollmentSlotId = sessionStorage.getItem("enrollment_slot_id");
 
         if (!enrollmentSlotId) {
           setError("No enrollment slot ID found");
@@ -34,7 +36,7 @@ const QuranText = () => {
           setLessonData(response.data);
         } else if (userRole === "Parent" || userRole === "Student") {
           // Parent or Student joins an existing session
-          const sessionId = localStorage.getItem("session_id");
+          const sessionId = sessionStorage.getItem("session_id");
           
           if (!sessionId) {
             setError("No session ID found");
@@ -66,6 +68,39 @@ const QuranText = () => {
     };
 
     initializeSession();
+
+    const checkSessionStatus = async () => {
+          try {
+            const userRole = sessionStorage.getItem("user_role");
+            const sessionId = sessionStorage.getItem("session_id");
+            
+            // only Students & Parents need to check if teacher ended the session
+            if ((userRole === "Parent" || userRole === "Student") && sessionId) {
+              const response = await axios.get(
+                `http://localhost/OnlineQuranServer/api/tutor/isSessionEnded`,
+                { params: { sessionId: parseInt(sessionId) } }
+              );
+    
+              if (response.data === true) {
+                alert("The session has been ended by the Teacher.");
+                sessionStorage.removeItem("enrollment_slot_id");
+                sessionStorage.removeItem("session_id");
+                sessionStorage.removeItem("user_role");
+                navigate(""); // or home screen
+                return;
+              }
+            }
+          } catch (error) {
+            console.error("Error checking session status:", error);
+          }
+        };
+    
+        // check immediately when component loads
+        checkSessionStatus();
+    
+        // keep checking every 7 seconds
+        const interval = setInterval(checkSessionStatus, 7000);
+        return () => clearInterval(interval);
   }, []);
 
   const handleSubmit = () => {
@@ -90,7 +125,7 @@ const QuranText = () => {
       .then((response) => {
         alert("Session ended successfully!");
         // Clear session data and redirect
-        window.location.href = `/${localStorage.getItem("user_role")}/${localStorage.getItem("username")}/dashboard`;
+        window.location.href = `/${sessionStorage.getItem("user_role")}/${sessionStorage.getItem("username")}/dashboard`;
       })
       .catch((error) => {
         console.error("Error ending session:", error);
@@ -158,7 +193,7 @@ const QuranText = () => {
       ) : (
         <p>No lesson content available</p>
       )}
-      {localStorage.getItem("user_role") === "Teacher" && <button className="floating-button" onClick={handleSubmit}>
+      {sessionStorage.getItem("user_role") === "Teacher" && <button className="floating-button" onClick={handleSubmit}>
         End Session
       </button>}
     </div>

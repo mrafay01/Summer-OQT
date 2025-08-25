@@ -8,8 +8,8 @@ const Quran = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const ruku_id = parseInt(localStorage.getItem("ruku_id"));
-    const surah_id = parseInt(localStorage.getItem("surah_id"));
+    const ruku_id = parseInt(sessionStorage.getItem("ruku_id"));
+    const surah_id = parseInt(sessionStorage.getItem("surah_id"));
 
     axios.get(`http://localhost/OnlineQuranServer/api/tutor/GetQuran?ruku_id=${ruku_id}&surah_id=${surah_id}`)
       .then((response) => {

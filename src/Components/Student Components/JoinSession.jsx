@@ -9,7 +9,7 @@ const JoinSession = () => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const studentId = localStorage.getItem("id");
+        const studentId = sessionStorage.getItem("id");
 
         const response = await axios.get(
           `http://localhost/OnlineQuranServer/api/tutor/CheckAnyStartedSession`,
@@ -34,9 +34,9 @@ const JoinSession = () => {
   const handleJoinSession = () => {
     if (session) {
       // Store session info and navigate to lesson
-      localStorage.setItem("enrollment_slot_id", session.EnrollmentSlot_Id);
-      localStorage.setItem("session_id", session.id);
-      localStorage.setItem("user_role", "Student");
+      sessionStorage.setItem("enrollment_slot_id", session.EnrollmentSlot_Id);
+      sessionStorage.setItem("session_id", session.id);
+      sessionStorage.setItem("user_role", "Student");
       if(session.isHadith)
         navigate("/view-hadith-lesson-text")
       else
